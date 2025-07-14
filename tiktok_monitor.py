@@ -9,7 +9,15 @@ import csv
 import time
 import hashlib
 import datetime
+import signal
 from yt_dlp import YoutubeDL
+
+shutdown_requested = False
+
+def handle_shutdown_signal(signum, frame):
+    global shutdown_requested
+    print(f"\nReceived signal {signum}. Shutting down...")
+    shutdown_requested = True
 
 # Configuration
 CHANNEL_USERNAME = "username"
@@ -133,7 +141,7 @@ def main():
     # First run flag
     first_run = True
     
-    while True:
+    while not shutdown_requested:
         try:
             print(f"Checking for new videos from @{CHANNEL_USERNAME} at {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
             
@@ -170,16 +178,17 @@ def main():
             
             # Wait for next check
             print(f"Sleeping for {CHECK_INTERVAL} seconds until next check at {(datetime.datetime.now() + datetime.timedelta(seconds=CHECK_INTERVAL)).strftime('%Y-%m-%d %H:%M:%S')}")
-            time.sleep(CHECK_INTERVAL)
+            sleep_interval = 5  # seconds
+            slept = 0
+            while slept < CHECK_INTERVAL and not shutdown_requested:
+                time.sleep(sleep_interval)
+                slept += sleep_interval
         
         except Exception as e:
             print(f"Error: {e}")
             time.sleep(CHECK_INTERVAL)
 
 if __name__ == "__main__":
-    try:
-        main()
-    except KeyboardInterrupt:
-        print("\nMonitoring stopped by user")
-    except Exception as e:
-        print(f"Fatal error: {e}")
+    signal.signal(signal.SIGINT, handle_shutdown_signal)
+    signal.signal(signal.SIGTERM, handle_shutdown_signal)
+    main()
