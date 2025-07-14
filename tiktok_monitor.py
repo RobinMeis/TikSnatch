@@ -9,7 +9,6 @@ import csv
 import time
 import hashlib
 import datetime
-import asyncio
 from yt_dlp import YoutubeDL
 
 # Configuration
