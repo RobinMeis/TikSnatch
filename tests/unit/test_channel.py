@@ -30,7 +30,6 @@ test_videos = {
     }
 }
 
-@pytest.mark.offline
 def test_channel_parsing():
     channel = Channel("muhmemtb")
     channel._parse_info(mock_info)
@@ -48,7 +47,6 @@ def test_channel_parsing():
         assert video.title == test_video["title"]
         assert video.description == test_video["description"]
 
-@pytest.mark.integration
 def test_online_channel():
     channel = Channel("muhmemtb")
     channel.get()
