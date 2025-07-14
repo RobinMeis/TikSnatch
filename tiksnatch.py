@@ -91,9 +91,9 @@ def log_video(video_data, file_path):
         # Write header if file doesn't exist
         if not file_exists:
             writer.writerow(['timestamp_video', 'timestamp_download', 'channel_name', 'video_id', 
-                             'caption', 'filename', 'sha256_hash'])
+                             'caption', 'filename', 'url', 'sha256_hash'])
         writer.writerow([timestamp_video, timestamp_download, CHANNEL_USERNAME, video_id, 
-                         caption, filename, file_hash])
+                         caption, filename, video_data.get('url'), file_hash])
 
 def get_tiktok_videos(username, limit=None):
     """Get TikTok videos using yt-dlp."""
@@ -146,7 +146,8 @@ def download_video(video_info):
             'timestamp': datetime.datetime.fromtimestamp(
                 int(video_info.get('timestamp', time.time()))
             ).isoformat() if 'timestamp' in video_info else datetime.datetime.now().isoformat(),
-            'title': video_info.get('title', '')
+            'title': video_info.get('title', ''),
+            'url': video_info['url']
         }
         
         print(f"Downloaded video: {file_name}")
