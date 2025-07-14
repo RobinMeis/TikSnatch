@@ -23,7 +23,7 @@ def handle_shutdown_signal(signum, frame):
 CHANNEL_USERNAME = "username"
 CHECK_INTERVAL = 300  # seconds
 DOWNLOAD_DIR = "downloads"
-LOG_FILE = os.path.join(DOWNLOAD_DIR, "video.log")
+LOG_FILE = os.path.join(DOWNLOAD_DIR, "videos.csv")
 MAX_INITIAL_DOWNLOADS = 10
 
 # Ensure download directory exists
