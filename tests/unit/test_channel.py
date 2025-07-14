@@ -12,19 +12,19 @@ mock_info = {'id': 'MS4wLjABAAAANz15gBVOXYHqE3I5e19cZ4GLTBsKAIGQUPqcaN3m7ZuIYrHZ
 test_videos = {
     0: {
         "url": "https://www.tiktok.com/@muhmemtb/video/7526904065213730050",
-        "timestamp": datetime.datetime(2025, 7, 14, 13, 52, 4),
+        "timestamp": 1752493924.0,
         "title": "",
         "description": ""
     },
     1: {
         "url": "https://www.tiktok.com/@muhmemtb/video/7526903061072104726",
-        "timestamp": datetime.datetime(2025, 7, 14, 13, 48, 9),
+        "timestamp": 1752493689.0,
         "title": "Muhme mag Dichtmilch",
         "description": "Muhme mag Dichtmilch"
     },
     2: {
         "url": "https://www.tiktok.com/@muhmemtb/video/7526902878389210390",
-        "timestamp": datetime.datetime(2025, 7, 14, 13, 47, 28),
+        "timestamp": 1752493648.0,
         "title": "Shredding Muhme",
         "description": "Shredding Muhme"
     }
@@ -43,7 +43,7 @@ def test_channel_parsing():
         video = channel.videos[index]
         assert isinstance(video, Video)
         assert video.url == test_video["url"]
-        #assert video.timestamp == test_video["timestamp"]
+        assert video.timestamp.timestamp() == test_video["timestamp"]
         assert video.title == test_video["title"]
         assert video.description == test_video["description"]
 
@@ -60,6 +60,6 @@ def test_online_channel():
         video = channel.videos[index]
         assert isinstance(video, Video)
         assert video.url == test_video["url"]
-        #assert video.timestamp == test_video["timestamp"]
+        assert video.timestamp.timestamp() == test_video["timestamp"]
         assert video.title == test_video["title"]
         assert video.description == test_video["description"]
