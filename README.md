@@ -14,8 +14,55 @@
 
 TikSnatch can be run using Python 3 or the pre-built docker image.
 
-### Docker
-ToDo
+### 🐳 Docker
+
+TikSnatch is also available as a Docker container, which is ideal for running it in the background, in a containerized environment, or scheduled via cron/Kubernetes.
+
+#### 🧪 Basic example
+
+```bash
+docker run --rm \
+  -v "$(pwd)/downloads:/app/downloads" \
+  -e TIKSNATCH_USERNAME=some_tiktok_user \
+  robinmeis/tiksnatch:latest
+```
+
+This command:
+- Mounts the local `./downloads` folder into the container
+- Sets the username via environment variable
+- Pulls and runs the latest Docker image
+
+> Replace `"$(pwd)/downloads"` with the desired absolute path on your system.
+
+#### ⚙️ Supported Environment Variables
+
+| Variable                     | Description                                 | Default         |
+|------------------------------|---------------------------------------------|-----------------|
+| `TIKSNATCH_USERNAME`         | TikTok username to monitor                  | *(required)*    |
+| `TIKSNATCH_INTERVAL`         | Check interval in minutes                   | `5`             |
+| `TIKSNATCH_DOWNLOAD_DIR`     | Path inside the container to save videos    | `/app/downloads`|
+| `TIKSNATCH_MAX_INITIAL`      | Max number of videos to fetch on first run  | `10`            |
+
+#### 📝 Example with all variables
+
+```bash
+docker run --rm \
+  -v "$(pwd)/downloads:/app/downloads" \
+  -e TIKSNATCH_USERNAME=someuser \
+  -e TIKSNATCH_INTERVAL=10 \
+  -e TIKSNATCH_DOWNLOAD_DIR=/app/downloads \
+  -e TIKSNATCH_MAX_INITIAL=20 \
+  robinmeis/tiksnatch:latest
+```
+
+You can also run it with `--detach` (`-d`) to keep it running in the background:
+
+```bash
+docker run -d --name tiksnatch \
+  -v "$(pwd)/downloads:/app/downloads" \
+  -e TIKSNATCH_USERNAME=someuser \
+  robinmeis/tiksnatch:latest
+```
 
 ### Python
 You can run TikSnatch directly using Python 3
