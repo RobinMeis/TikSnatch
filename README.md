@@ -108,3 +108,37 @@ options:
 
  In general, command-line values override environment variables which override defaults.
 ```
+
+## 🌐 Proxy Support
+
+TikSnatch (via `yt-dlp`) supports routing all HTTPS traffic through a proxy using the standard `HTTPS_PROXY` environment variable.
+
+This allows you to run TikSnatch behind a firewall, VPN, or through a SOCKS proxy (e.g. Tor).
+
+### ✅ Supported proxy formats
+
+| Scheme         | Description                           |
+|----------------|---------------------------------------|
+| `http://`      | Standard HTTP proxy                   |
+| `socks5://`    | SOCKS5 proxy                          |
+| `socks5h://`   | SOCKS5 with remote DNS (e.g. Tor)     |
+| `socks4://`    | SOCKS4 proxy                          |
+
+### 🧪 Example (Linux/macOS)
+
+```bash
+export HTTPS_PROXY=socks5h://127.0.0.1:9050
+python tiksnatch.py --username someuser
+```
+
+### 🐳 Example with Docker
+
+```bash
+docker run --rm \
+  -v "$(pwd)/downloads:/app/downloads" \
+  -e TIKSNATCH_USERNAME=someuser \
+  -e HTTPS_PROXY=socks5h://127.0.0.1:9050 \
+  robinmeis/tiksnatch:latest
+```
+
+> TikSnatch does not manage proxy configuration itself — it simply respects the `HTTPS_PROXY` environment variable.
