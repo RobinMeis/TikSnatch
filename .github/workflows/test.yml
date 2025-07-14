@@ -8,8 +8,9 @@ on:
   workflow_dispatch:   # Allow manual trigger via GitHub UI
 
 permissions:
-  checks: write
   contents: read
+  actions: read
+  checks: write
 
 jobs:
   test:
@@ -44,8 +45,8 @@ jobs:
           path: report.xml
 
       - name: Publish test results to GitHub Checks
-        uses: dorny/test-reporter@v1
-        if: always()  # Always run even if tests fail
+        uses: dorny/test-reporter@v2
+        if: ${{ !cancelled() }}       # run this step even if previous step failed
         with:
           name: Pytest Results
           path: report.xml
