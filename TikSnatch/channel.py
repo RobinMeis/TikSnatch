@@ -11,7 +11,6 @@ class Channel:
     def get(self):
         # Fetches & parses channel details
         info = self._fetch_info()
-        print(info)
         self._parse_info(info)
 
     def _fetch_info(self):
@@ -42,6 +41,7 @@ class Channel:
                     continue  # Skip broken/incomplete videos
 
                 self.videos.append(Video(
+                    id = video["id"],
                     url = video["url"],
                     timestamp = video["timestamp"],
                     title=video.get("title", None),
