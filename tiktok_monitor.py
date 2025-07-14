@@ -10,6 +10,7 @@ import time
 import hashlib
 import datetime
 import signal
+import configargparse
 from yt_dlp import YoutubeDL
 
 shutdown_requested = False
@@ -19,12 +20,25 @@ def handle_shutdown_signal(signum, frame):
     print(f"\nReceived signal {signum}. Shutting down...")
     shutdown_requested = True
 
-# Configuration
-CHANNEL_USERNAME = "username"
-CHECK_INTERVAL = 300  # seconds
-DOWNLOAD_DIR = "downloads"
+def get_config():
+    parser = configargparse.ArgParser(
+        description="TikSnatch - TikTok video monitor",
+        default_config_files=[]
+    )
+
+    parser.add('--username', env_var='TIKSNATCH_USERNAME', required=True, help='TikTok username to monitor')
+    parser.add('--interval', env_var='TIKSNATCH_INTERVAL', type=int, default=300, help='Check interval in seconds')
+    parser.add('--download-dir', env_var='TIKSNATCH_DOWNLOAD_DIR', default='downloads', help='Directory to save videos')
+    parser.add('--max-initial-downloads', env_var='TIKSNATCH_MAX_INITIAL', type=int, default=10, help='Limit on first run')
+
+    return parser.parse_args()
+
+args = get_config()
+CHANNEL_USERNAME = args.username
+CHECK_INTERVAL = args.interval
+DOWNLOAD_DIR = args.download_dir
+MAX_INITIAL_DOWNLOADS = args.max_initial_downloads
 LOG_FILE = os.path.join(DOWNLOAD_DIR, "videos.csv")
-MAX_INITIAL_DOWNLOADS = 10
 
 # Ensure download directory exists
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
