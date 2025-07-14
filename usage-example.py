@@ -15,3 +15,6 @@ video = channel.videos[0]
 
 # Download the video
 video.download("downloads/")
+
+# Print video details
+print(video)
