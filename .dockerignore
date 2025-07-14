@@ -6,3 +6,4 @@ tests/
 .env
 venv/
 downloads/
+test-downloads/
