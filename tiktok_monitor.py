@@ -43,6 +43,14 @@ LOG_FILE = os.path.join(DOWNLOAD_DIR, "videos.csv")
 # Ensure download directory exists
 os.makedirs(DOWNLOAD_DIR, exist_ok=True)
 
+def wait():
+    print(f"Sleeping for {CHECK_INTERVAL} seconds until next check at {(datetime.datetime.now() + datetime.timedelta(seconds=CHECK_INTERVAL)).strftime('%Y-%m-%d %H:%M:%S')}")
+    sleep_interval = 5  # seconds
+    slept = 0
+    while slept < CHECK_INTERVAL and not shutdown_requested:
+        time.sleep(sleep_interval)
+        slept += sleep_interval
+
 def calculate_sha256(file_path):
     """Calculate SHA256 hash of a file."""
     sha256_hash = hashlib.sha256()
@@ -168,7 +176,7 @@ def main():
             
             if not videos:
                 print("No videos found or error fetching videos")
-                time.sleep(CHECK_INTERVAL)
+                wait()
                 continue
             
             # Check for new videos
@@ -191,16 +199,11 @@ def main():
                 print(f"No new videos found")
             
             # Wait for next check
-            print(f"Sleeping for {CHECK_INTERVAL} seconds until next check at {(datetime.datetime.now() + datetime.timedelta(seconds=CHECK_INTERVAL)).strftime('%Y-%m-%d %H:%M:%S')}")
-            sleep_interval = 5  # seconds
-            slept = 0
-            while slept < CHECK_INTERVAL and not shutdown_requested:
-                time.sleep(sleep_interval)
-                slept += sleep_interval
+            wait()
         
         except Exception as e:
             print(f"Error: {e}")
-            time.sleep(CHECK_INTERVAL)
+            wait()
 
 if __name__ == "__main__":
     signal.signal(signal.SIGINT, handle_shutdown_signal)
