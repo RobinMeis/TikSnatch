@@ -1,6 +1,6 @@
 # 🎬 TikSnatch
 
-**TikSnatch** is an automated tool to download and archive all public videos from a TikTok user. It periodically checks the specified profile and saves any new uploads — ideal for backups, research, or offline access.
+**TikSnatch** is an automated tool based on yt-dlp to download and archive all public videos from a TikTok user. It periodically checks the specified profile and saves any new uploads — ideal for backups, research, or offline access.
 
 ## 🚀 Features
 
