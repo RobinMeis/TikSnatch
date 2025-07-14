@@ -1,8 +1,6 @@
 name: Run Tests
 
 on:
-  push:
-    branches: [ "*" ]  # Run on any branch
   pull_request:
     branches: [ "*" ]  # Run on any PR to any branch
   workflow_dispatch:   # Allow manual trigger via GitHub UI
@@ -46,7 +44,7 @@ jobs:
 
       - name: Publish test results to GitHub Checks
         uses: dorny/test-reporter@v2
-                if: ${{ !cancelled() }}       # run this step even if previous step failed
+        if: ${{ !cancelled() }}       # run this step even if previous step failed
         with:
           name: Pytest Results
           path: report.xml
