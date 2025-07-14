@@ -12,4 +12,4 @@ RUN pip install --upgrade pip && \
 COPY . .
 
 # Set the entry point
-CMD ["python", "-u", "tiksnatch.py"]
+ENTRYPOINT ["python", "-u", "tiksnatch.py"]
