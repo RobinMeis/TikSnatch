@@ -16,7 +16,7 @@ TikSnatch can be run using Python 3 or the pre-built docker image.
 
 ### 🐳 Docker
 
-TikSnatch is also available as a Docker container, which is ideal for running it in the background, in a containerized environment, or scheduled via cron/Kubernetes.
+TikSnatch is also available as a Docker image, which is ideal for running it in a containerized environment.
 
 #### 🧪 Basic example
 
