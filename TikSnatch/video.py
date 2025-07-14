@@ -49,10 +49,12 @@ class Video:
     def __str__(self):
         return (
             f"Video:\n"
+            f"  ID         : {self.id or '-'}\n"
             f"  Title      : {self.title or '-'}\n"
             f"  URL        : {self.url}\n"
             f"  Timestamp  : {self.timestamp.isoformat()}\n"
-            f"  Description: {self.description or '-'}"
+            f"  Description: {self.description or '-'}\n"
+            f"  SHA256 Hash: {self.sha256_hash or '-'}"
         )
 
     def __repr__(self):
