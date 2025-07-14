@@ -11,4 +11,4 @@ RUN pip install --upgrade pip && pip install -r requirements.txt
 COPY . .
 
 # Set the entry point
-CMD ["python", "-u", "tiktok_monitor.py"]
+CMD ["python", "-u", "tiksnatch.py"]
