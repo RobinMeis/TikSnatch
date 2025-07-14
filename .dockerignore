@@ -4,5 +4,5 @@ __pycache__/
 tests/
 *.log
 .env
-venv
-downloads
+venv/
+downloads/
