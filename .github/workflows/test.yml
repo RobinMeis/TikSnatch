@@ -28,7 +28,21 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
 
-      - name: Run tests
+      - name: Run tests and generate JUnit report
         run: |
           source venv/bin/activate
-          pytest
+          pytest --junitxml=report.xml
+
+      - name: Upload JUnit test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-report
+          path: report.xml
+
+      - name: Publish test results to GitHub Checks
+        uses: dorny/test-reporter@v1
+        if: always()  # Always run even if tests fail
+        with:
+          name: Pytest Results
+          path: report.xml
+          reporter: java-junit
