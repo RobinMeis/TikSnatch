@@ -41,4 +41,5 @@ jobs:
           push: true
           tags: |
             robinmeis/tiksnatch:${{ steps.extract.outputs.ref }}
+            robinmeis/tiksnatch:${{ github.sha }}
             ${{ github.ref_type == 'tag' && 'robinmeis/tiksnatch:latest' || '' }}
