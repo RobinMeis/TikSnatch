@@ -16,7 +16,7 @@ os.makedirs("test-downloads/")
     (7526902878389210390, "https://www.tiktok.com/@muhmemtb/video/7526902878389210390", 1752493648.0, "Shredding Muhme", "Shredding Muhme", "8e4baf64cbb8e8b0fd4c0d3dbcd63c6d6feba7a30d95280db039391e3803b3cf"),
 ])
 
-def test_find_sequence_numbers(id, url, timestamp, title, description, sha256_hash):
+def test_video_download(id, url, timestamp, title, description, sha256_hash):
     video = Video(
         id = id,
         url = url,
