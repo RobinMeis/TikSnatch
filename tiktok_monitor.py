@@ -82,9 +82,9 @@ def log_video(video_data, file_path):
         writer = csv.writer(f, quoting=csv.QUOTE_ALL)  # Quote all fields for maximum safety
         # Write header if file doesn't exist
         if not file_exists:
-            writer.writerow(['timestamp_video', 'timestamp_download', 'video_id', 
+            writer.writerow(['timestamp_video', 'timestamp_download', 'channel_name', 'video_id', 
                              'caption', 'filename', 'sha256_hash'])
-        writer.writerow([timestamp_video, timestamp_download, video_id, 
+        writer.writerow([timestamp_video, timestamp_download, CHANNEL_USERNAME, video_id, 
                          caption, filename, file_hash])
 
 def get_tiktok_videos(username, limit=None):
