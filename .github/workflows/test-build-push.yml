@@ -52,6 +52,7 @@ jobs:
           reporter: java-junit
 
   build-and-push:
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
