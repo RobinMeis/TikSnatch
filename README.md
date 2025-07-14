@@ -1,4 +1,4 @@
-# TikSnatch
+# 🎬 TikSnatch
 
 **TikSnatch** is an automated tool to download and archive all public videos from a TikTok user. It periodically checks the specified profile and saves any new uploads — ideal for backups, research, or offline access.
 
@@ -10,7 +10,7 @@
 - 🔧 Easy configuration via command-line or config file
 - 🧪 Perfect for archivists, researchers, or content watchers
 
-## Usage
+## ⚙️ Usage
 
 TikSnatch can be run using Python 3 or the pre-built docker image.
 
@@ -43,7 +43,7 @@ This command:
 | `TIKSNATCH_DOWNLOAD_DIR`     | Path inside the container to save videos    | `/app/downloads`|
 | `TIKSNATCH_MAX_INITIAL`      | Max number of videos to fetch on first run  | `10`            |
 
-#### 📝 Example with all variables
+#### 🧩 Example with all variables
 
 ```bash
 docker run --rm \
@@ -64,11 +64,13 @@ docker run -d --name tiksnatch \
   robinmeis/tiksnatch:latest
 ```
 
-### Python
-You can run TikSnatch directly using Python 3
+### 🐍 Python
 
-#### Installation
-```
+You can run TikSnatch directly using Python 3.
+
+#### 🧪 Installation
+
+```bash
 git clone https://github.com/robinmeis/tiksnatch.git
 cd tiksnatch
 python3 -m venv venv
@@ -76,15 +78,19 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-#### Run
+#### ▶️ Run
+
 Make sure your virtual environment is activated before starting TikSnatch.
-```
+
+```bash
 source venv/bin/activate
 python tiksnatch.py --username some_tiktok_user
 ```
 
-#### Commandline options
+#### 📖 Command-line options
+
 TikSnatch offers several command line options:
+
 ```bash
 python3 tiksnatch.py --help
 usage: tiksnatch.py [-h] --username USERNAME [--interval INTERVAL] [--download-dir DOWNLOAD_DIR] [--max-initial-downloads MAX_INITIAL_DOWNLOADS]
