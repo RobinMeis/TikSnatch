@@ -27,7 +27,7 @@ def get_config():
     )
 
     parser.add('--username', env_var='TIKSNATCH_USERNAME', required=True, help='TikTok username to monitor')
-    parser.add('--interval', env_var='TIKSNATCH_INTERVAL', type=int, default=300, help='Check interval in seconds')
+    parser.add('--interval', env_var='TIKSNATCH_INTERVAL', type=int, default=5, help='Check interval in minutes')
     parser.add('--download-dir', env_var='TIKSNATCH_DOWNLOAD_DIR', default='downloads', help='Directory to save videos')
     parser.add('--max-initial-downloads', env_var='TIKSNATCH_MAX_INITIAL', type=int, default=10, help='Limit on first run')
 
@@ -35,7 +35,7 @@ def get_config():
 
 args = get_config()
 CHANNEL_USERNAME = args.username
-CHECK_INTERVAL = args.interval
+CHECK_INTERVAL = args.interval*60
 DOWNLOAD_DIR = args.download_dir
 MAX_INITIAL_DOWNLOADS = args.max_initial_downloads
 LOG_FILE = os.path.join(DOWNLOAD_DIR, "videos.csv")
