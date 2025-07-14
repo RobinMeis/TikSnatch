@@ -4,11 +4,6 @@ on:
   pull_request:
     branches: [ "*" ]  # Run on any PR to any branch
 
-permissions:
-  contents: read
-  actions: read
-  checks: write
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -41,10 +36,3 @@ jobs:
           name: junit-report
           path: report.xml
 
-      - name: Publish test results to GitHub Checks
-        uses: dorny/test-reporter@v2
-        if: ${{ !cancelled() }}       # run this step even if previous step failed
-        with:
-          name: Pytest Results
-          path: report.xml
-          reporter: java-junit
