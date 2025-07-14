@@ -1,5 +1,8 @@
 FROM python:3.11-slim
 
+LABEL org.opencontainers.image.source="https://github.com/robinmeis/tiksnatch"
+LABEL org.opencontainers.image.licenses="MIT"
+
 # Create app directory
 WORKDIR /app
 
