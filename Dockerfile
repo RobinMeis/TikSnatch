@@ -9,7 +9,7 @@ VOLUME /app/downloads
 
 # Create app directory
 WORKDIR /app
-COPY requirements.txt tiksnatch.py ./
+COPY requirements.txt tiksnatch.py TikSnatch ./
 
 # Install Python requirements
 RUN pip install --upgrade pip && \
