@@ -31,7 +31,7 @@ class Video:
 
     def download(self, output_directory):
         """Download a TikTok video using yt-dlp."""
-        timestamp = self.timestamp.strftime("%Y%m%d_%H%M%S")
+        timestamp = self.timestamp.strftime("%Y-%m-%d_%H%M%S")
         file_name = f"{timestamp}_{self.channel.username}_{self.id}.mp4"
         self.filepath = path.join(output_directory, file_name)
         
