@@ -41,6 +41,7 @@ class Channel:
                     continue  # Skip broken/incomplete videos
 
                 self.videos.append(Video(
+                    channel = self,
                     id = video["id"],
                     url = video["url"],
                     timestamp = video["timestamp"],

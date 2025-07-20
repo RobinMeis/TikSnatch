@@ -6,10 +6,12 @@ from datetime import datetime
 from .exceptions import VideoNotDownloaded
 
 class Video:
-    def __init__(self, id, url, timestamp, title, description):
+    def __init__(self, channel, id, url, timestamp, title, description):
+        self.channel = channel
         self.id = id
         self.url = url
         self.timestamp = datetime.fromtimestamp(timestamp)
+        self.timestamp_download = None
         self.title = title
         self.description = description
         self.filepath = None
@@ -44,6 +46,7 @@ class Video:
         with YoutubeDL(ydl_opts) as ydl:
             ydl.download([self.url])
 
+        self.timestamp_download = datetime.now()
         self.calculate_sha256()
 
     def __str__(self):
