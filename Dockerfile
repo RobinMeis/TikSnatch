@@ -1,14 +1,19 @@
 FROM python:3.11-slim
 
+# Metadata
+LABEL org.opencontainers.image.source="https://github.com/robinmeis/tiksnatch"
+LABEL org.opencontainers.image.licenses="MIT"
+
+# Default volume
+VOLUME /app/downloads
+
 # Create app directory
 WORKDIR /app
+COPY requirements.txt tiksnatch.py ./
 
 # Install Python requirements
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
-
-# Copy your app
-COPY . .
+RUN pip install --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
 
 # Set the entry point
-CMD ["python", "-u", "tiktok_monitor.py"]
+ENTRYPOINT ["python", "-u", "tiksnatch.py"]

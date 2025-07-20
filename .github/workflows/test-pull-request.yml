@@ -1,0 +1,38 @@
+name: Run Tests
+
+on:
+  pull_request:
+    branches: [ "*" ]  # Run on any PR to any branch
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: |
+          python -m venv venv
+          source venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests and generate JUnit report
+        run: |
+          source venv/bin/activate
+          pytest --junitxml=report.xml
+
+      - name: Upload JUnit test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit-report
+          path: report.xml
+

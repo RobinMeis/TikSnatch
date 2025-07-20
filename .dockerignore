@@ -1,0 +1,9 @@
+.git
+*.md
+__pycache__/
+tests/
+*.log
+.env
+venv/
+downloads/
+test-downloads/
