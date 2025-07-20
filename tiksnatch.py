@@ -16,7 +16,7 @@ def handle_shutdown_signal(signum, frame):
 
 def get_config():
     parser = configargparse.ArgParser(
-        description="TikSnatch - TikTok video monitor",
+        description="TikSnatch - TikTok video monitor & downloader",
         default_config_files=[]
     )
 

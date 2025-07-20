@@ -1,14 +1,12 @@
 # 🎬 TikSnatch
 
-**TikSnatch** is an automated tool based on yt-dlp to download and archive all public videos from a TikTok user. It periodically checks the specified profile and saves any new uploads — ideal for backups, research, or offline access.
+**TikSnatch** is an automated tool based on yt-dlp to download and archive all public videos from a TikTok user. It periodically checks the specified profile and saves any new uploads — ideal for backups, archiving, or offline access.
 
 ## 🚀 Features
 
 - 🔁 Automatically checks for new videos every `X` minutes
 - 📥 Downloads all public videos from a given TikTok username
-- 🗂️ Saves files by user and upload date
-- 🔧 Easy configuration via command-line or config file
-- 🧪 Perfect for archivists, researchers, or content watchers
+- 🔧 Easy configuration via command-line or environment variables
 
 ## ⚙️ Usage
 
@@ -36,26 +34,13 @@ This command:
 
 #### ⚙️ Supported Environment Variables
 
-| Variable                     | Description                                 | Default         |
-|------------------------------|---------------------------------------------|-----------------|
-| `TIKSNATCH_USERNAME`         | TikTok username to monitor                  | *(required)*    |
-| `TIKSNATCH_INTERVAL`         | Check interval in minutes                   | `5`             |
-| `TIKSNATCH_DOWNLOAD_DIR`     | Path inside the container to save videos    | `/app/downloads`|
-| `TIKSNATCH_MAX_INITIAL`      | Max number of videos to fetch on first run  | `10`            |
+| Variable                     | Description                                   | Default         |
+|------------------------------|-----------------------------------------------|-----------------|
+| `TIKSNATCH_USERNAME`         | TikTok username to monitor                    | *(required)*    |
+| `TIKSNATCH_INTERVAL`         | Check interval in minutes                     | `5`             |
+| `TIKSNATCH_DOWNLOAD_DIR`     | Path inside the container to save videos      | `/app/downloads`|
+| `SINCE `                     | Only download videos since date (YYYY-MM-DD)  | `None`          |
 
-#### 🧩 Example with all variables
-
-```bash
-docker run --rm \
-  -v "$(pwd)/downloads:/app/downloads" \
-  -e TIKSNATCH_USERNAME=someuser \
-  -e TIKSNATCH_INTERVAL=10 \
-  -e TIKSNATCH_DOWNLOAD_DIR=/app/downloads \
-  -e TIKSNATCH_MAX_INITIAL=20 \
-  robinmeis/tiksnatch:latest
-```
-
-You can also run it with `--detach` (`-d`) to keep it running in the background:
 
 ```bash
 docker run -d --name tiksnatch \
@@ -92,10 +77,9 @@ python tiksnatch.py --username some_tiktok_user
 TikSnatch offers several command line options:
 
 ```bash
-python3 tiksnatch.py --help
-usage: tiksnatch.py [-h] --username USERNAME [--interval INTERVAL] [--download-dir DOWNLOAD_DIR] [--max-initial-downloads MAX_INITIAL_DOWNLOADS]
+usage: tiksnatch.py [-h] --username USERNAME [--interval INTERVAL] [--download-dir DOWNLOAD_DIR] [--run-once] [--since SINCE]
 
-TikSnatch - TikTok video monitor
+TikSnatch - TikTok video monitor & downloader
 
 options:
   -h, --help            show this help message and exit
@@ -103,8 +87,8 @@ options:
   --interval INTERVAL   Check interval in minutes [env var: TIKSNATCH_INTERVAL]
   --download-dir DOWNLOAD_DIR
                         Directory to save videos [env var: TIKSNATCH_DOWNLOAD_DIR]
-  --max-initial-downloads MAX_INITIAL_DOWNLOADS
-                        Limit on first run [env var: TIKSNATCH_MAX_INITIAL]
+  --run-once            Downlaod once and exit. Disables permanent monitoring
+  --since SINCE         Only download videos published on or after this date (YYYY-MM-DD) [env var: SINCE]
 
  In general, command-line values override environment variables which override defaults.
 ```
