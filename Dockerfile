@@ -1,4 +1,4 @@
-FROM python:3.11-slim
+FROM python:3.13-slim
 
 # Metadata
 LABEL org.opencontainers.image.source="https://github.com/robinmeis/tiksnatch"
