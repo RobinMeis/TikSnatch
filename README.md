@@ -49,6 +49,24 @@ docker run -d --name tiksnatch \
   robinmeis/tiksnatch:latest
 ```
 
+#### ❤️‍🔥 Liveness Probe Support
+
+TikSnatch includes built-in support for container liveness checks. It automatically updates an internal timestamp file during normal operation. This allows orchestration systems like Kubernetes to verify that the process is still healthy (see example below).
+
+A shell script named `liveness_check.sh` is included in the Docker image and can be used to perform the actual check. It exits with status `0` if the process is considered healthy, or `1` if overdue or stuck.
+
+```yaml
+livenessProbe:
+  exec:
+    command:
+      - /bin/sh
+      - -c
+      - /app/liveness_check.sh
+  initialDelaySeconds: 60
+  periodSeconds: 60
+  failureThreshold: 3
+```
+
 ### 🐍 Python
 
 You can run TikSnatch directly using Python 3.
