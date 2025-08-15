@@ -9,6 +9,29 @@ from TikSnatch.videolog import VideoLog
 
 shutdown_requested = False
 
+def update_liveness_file(path: str | None, interval_minutes: int):
+    """
+    Write the expected next check time (as Unix timestamp) to the given file.
+    Does nothing if path is None.
+    """
+    if not path:
+        return
+
+    try:
+        dir_path = os.path.dirname(path)
+        if dir_path:
+            os.makedirs(dir_path, exist_ok=True)
+
+        next_check = int(time.time()) + interval_minutes * 60
+
+        tmp_path = f"{path}.tmp"
+        with open(tmp_path, "w") as f:
+            f.write(str(next_check))
+
+        os.replace(tmp_path, path)
+    except Exception as e:
+        raise RuntimeError(f"Failed to update liveness file at '{path}': {e}")
+
 def handle_shutdown_signal(signum, frame):
     global shutdown_requested
     print(f"\nReceived signal {signum}. Shutting down...")
@@ -25,6 +48,7 @@ def get_config():
     parser.add('--download-dir', env_var='TIKSNATCH_DOWNLOAD_DIR', default='downloads', help='Directory to save videos')
     parser.add('--run-once', action='store_true', help='Downlaod once and exit. Disables permanent monitoring')
     parser.add('--since', env_var='SINCE', type=str, help='Only download videos published on or after this date (YYYY-MM-DD)')
+    parser.add('--liveness-file', env_var='LIVENESS_FILE', type=str, help='Path to a file where the process writes its last successful run timestamp (used for liveness checks)')
 
     return parser.parse_args()
 
@@ -77,5 +101,7 @@ while not shutdown_requested:
 
     if config.run_once: # Exit if run once is enabled
         break
+
+    update_liveness_file(config.liveness_file, config.interval)
 
     wait(config.interval)

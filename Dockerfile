@@ -7,9 +7,13 @@ LABEL org.opencontainers.image.licenses="MIT"
 # Default volume
 VOLUME /app/downloads
 
+# Default environment variables
+ENV LIVENESS_FILE=/tmp/liveness.txt
+
 # Create app directory
 WORKDIR /app
 COPY requirements.txt tiksnatch.py ./
+COPY liveness_check.sh ./
 COPY TikSnatch ./TikSnatch
 
 # Install Python requirements
