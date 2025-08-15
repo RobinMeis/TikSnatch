@@ -85,6 +85,8 @@ while not shutdown_requested:
     print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Checking channel for videos...")
     channel.get()
 
+    update_liveness_file(config.liveness_file, config.interval)
+
     for video in channel.videos:
         if since_date and video.timestamp < since_date: # Skip videos that have been uploaded before since_date
             continue
@@ -99,9 +101,9 @@ while not shutdown_requested:
         # Log video to logfile
         videolog.logVideo(video)
 
+        update_liveness_file(config.liveness_file, config.interval)
+
     if config.run_once: # Exit if run once is enabled
         break
-
-    update_liveness_file(config.liveness_file, config.interval)
 
     wait(config.interval)
