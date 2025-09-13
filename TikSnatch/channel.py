@@ -33,6 +33,9 @@ class Channel:
         if info and 'entries' in info:
             videos = info['entries']
 
+            if not videos:
+                return  # No videos found
+
             self.channel_id = videos[0]["uploader_id"]
             self.name = videos[0]["channel"]
 
