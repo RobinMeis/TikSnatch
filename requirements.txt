@@ -1,2 +1,2 @@
-yt_dlp==2025.9.5
+yt_dlp==2025.10.22
 configargparse==1.7.1
