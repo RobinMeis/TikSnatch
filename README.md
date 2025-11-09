@@ -107,9 +107,22 @@ options:
                         Directory to save videos [env var: TIKSNATCH_DOWNLOAD_DIR]
   --run-once            Downlaod once and exit. Disables permanent monitoring
   --since SINCE         Only download videos published on or after this date (YYYY-MM-DD) [env var: SINCE]
+  --session-id SESSION_ID
+                        Value of the sessionid cookie. Required to access private or age-restricted content. [env var: TT_SESSION_ID]
+  --liveness-file LIVENESS_FILE
+                        Path to a file where the process writes its last successful run timestamp (used for liveness checks) [env var: LIVENESS_FILE]
 
  In general, command-line values override environment variables which override defaults.
 ```
+
+## 🍪 Session Cookies
+To download content from private or age-restricted channels, providing a session cookie is mandatory. Perform the following steps to get a session cookie:
+
+1. Open tiktok.com in your webbrowser and login
+2. Open the developer console by pressing F12
+3. Go to Storage
+4. Go to Cookies
+5. Search for `sessionid` cookie and provide it using the `--session-id` option or `TT_SESSION_ID` environment variable
 
 ## 🌐 Proxy Support
 

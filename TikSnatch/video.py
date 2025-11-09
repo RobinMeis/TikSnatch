@@ -29,7 +29,7 @@ class Video:
                 sha256_hash.update(byte_block)
         self.sha256_hash = sha256_hash.hexdigest()
 
-    def download(self, output_directory):
+    def download(self, output_directory, cookies=None):
         """Download a TikTok video using yt-dlp."""
         timestamp = self.timestamp.strftime("%Y-%m-%d_%H%M%S")
         file_name = f"{timestamp}_{self.channel.username}_{self.id}.mp4"
@@ -40,8 +40,11 @@ class Video:
             'quiet': False,
             'no_warnings': True,
             'outtmpl': self.filepath,
-            'format': 'best'
+            'format': 'best',
         }
+        
+        if cookies:
+            ydl_opts['cookiefile'] = cookies.cookie_file
         
         with YoutubeDL(ydl_opts) as ydl:
             ydl.download([self.url])
