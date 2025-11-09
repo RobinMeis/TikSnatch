@@ -8,12 +8,12 @@ class Channel:
         self.channel_id = None
         self.videos = []
 
-    def get(self):
+    def get(self, cookies):
         # Fetches & parses channel details
-        info = self._fetch_info()
+        info = self._fetch_info(cookies)
         self._parse_info(info)
 
-    def _fetch_info(self):
+    def _fetch_info(self, cookies):
         # Downloads channel details
         url = f"https://www.tiktok.com/@{self.username}"
         
@@ -22,7 +22,8 @@ class Channel:
             'extract_flat': True,
             'quiet': True,
             'no_warnings': True,
-            'skip_download': True
+            'skip_download': True,
+             'cookiefile': cookies.cookie_file,
         }
         
         with YoutubeDL(ydl_opts) as ydl:

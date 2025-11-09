@@ -6,6 +6,7 @@ import os
 
 from TikSnatch.channel import Channel
 from TikSnatch.videolog import VideoLog
+from TikSnatch.cookies import TikTokCookies
 
 shutdown_requested = False
 
@@ -48,6 +49,7 @@ def get_config():
     parser.add('--download-dir', env_var='TIKSNATCH_DOWNLOAD_DIR', default='downloads', help='Directory to save videos')
     parser.add('--run-once', action='store_true', help='Downlaod once and exit. Disables permanent monitoring')
     parser.add('--since', env_var='SINCE', type=str, help='Only download videos published on or after this date (YYYY-MM-DD)')
+    parser.add('--session-id', env_var='TT_SESSION_ID', type=str, help='Value of the sessionid cookie. Required to access private or age-restricted content.')
     parser.add('--liveness-file', env_var='LIVENESS_FILE', type=str, help='Path to a file where the process writes its last successful run timestamp (used for liveness checks)')
 
     return parser.parse_args()
@@ -80,30 +82,31 @@ channel = Channel(config.username)
 signal.signal(signal.SIGINT, handle_shutdown_signal)
 signal.signal(signal.SIGTERM, handle_shutdown_signal)
 
-while not shutdown_requested:
-    videolog.read()
-    print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Checking channel for videos...")
-    channel.get()
-
-    update_liveness_file(config.liveness_file, config.interval)
-
-    for video in channel.videos:
-        if since_date and video.timestamp < since_date: # Skip videos that have been uploaded before since_date
-            continue
-
-        if videolog.checkVideo(video): # Skip if video has already been downloaded
-            continue
-
-        # Download the video
-        print(video)
-        video.download(download_dir)
-
-        # Log video to logfile
-        videolog.logVideo(video)
+with TikTokCookies(session_id=config.session_id) as cookies:
+    while not shutdown_requested:
+        videolog.read()
+        print(f"[{datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] Checking channel for videos...")
+        channel.get(cookies)
 
         update_liveness_file(config.liveness_file, config.interval)
 
-    if config.run_once: # Exit if run once is enabled
-        break
+        for video in channel.videos:
+            if since_date and video.timestamp < since_date: # Skip videos that have been uploaded before since_date
+                continue
 
-    wait(config.interval)
+            if videolog.checkVideo(video): # Skip if video has already been downloaded
+                continue
+
+            # Download the video
+            print(video)
+            video.download(download_dir, cookies)
+
+            # Log video to logfile
+            videolog.logVideo(video)
+
+            update_liveness_file(config.liveness_file, config.interval)
+
+        if config.run_once: # Exit if run once is enabled
+            break
+
+        wait(config.interval)
