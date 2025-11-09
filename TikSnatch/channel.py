@@ -8,7 +8,7 @@ class Channel:
         self.channel_id = None
         self.videos = []
 
-    def get(self, cookies):
+    def get(self, cookies=None):
         # Fetches & parses channel details
         info = self._fetch_info(cookies)
         self._parse_info(info)
@@ -23,8 +23,10 @@ class Channel:
             'quiet': True,
             'no_warnings': True,
             'skip_download': True,
-             'cookiefile': cookies.cookie_file,
         }
+
+        if cookies:
+            ydl_opts['cookiefile'] = cookies.cookie_file
         
         with YoutubeDL(ydl_opts) as ydl:
             return ydl.extract_info(url, download=False)
