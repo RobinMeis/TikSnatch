@@ -1,2 +1,2 @@
-yt_dlp==2025.10.22
-configargparse==1.7.1
+yt_dlp==2026.3.17
+configargparse==1.7.5
