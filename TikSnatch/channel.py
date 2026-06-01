@@ -1,4 +1,5 @@
 from yt_dlp import YoutubeDL
+from yt_dlp.utils import DownloadError  # Ensure this is imported
 from .video import Video
 
 class Channel:
@@ -14,10 +15,8 @@ class Channel:
         self._parse_info(info)
 
     def _fetch_info(self, cookies):
-        # Downloads channel details
         url = f"https://www.tiktok.com/@{self.username}"
         
-        # Configure yt-dlp
         ydl_opts = {
             'extract_flat': True,
             'quiet': True,
@@ -29,22 +28,38 @@ class Channel:
             ydl_opts['cookiefile'] = cookies.cookie_file
         
         with YoutubeDL(ydl_opts) as ydl:
-            return ydl.extract_info(url, download=False)
+            try:
+                return ydl.extract_info(url, download=False)
+            except DownloadError as e:
+                # Catch empty channel exception and pass a fallback indicator
+                if "This account does not have any videos posted" in str(e):
+                    return {"is_empty_channel": True}
+                raise e
 
     def _parse_info(self, info):
-        # Parses channel details
-        if info and 'entries' in info:
+        if not info:
+            return
+
+        # Handle empty channels gracefully with safe fallbacks
+        if info.get("is_empty_channel"):
+            self.name = self.username  # Fallback display name to username
+            self.channel_id = "Unknown"
+            self.videos = []
+            return
+
+        if 'entries' in info:
             videos = info['entries']
 
             if not videos:
-                return  # No videos found
+                return  
 
-            self.channel_id = videos[0]["uploader_id"]
-            self.name = videos[0]["channel"]
+            # Safeguard extraction in case fields are missing
+            self.channel_id = videos[0].get("uploader_id", "Unknown")
+            self.name = videos[0].get("channel", self.username)
 
             for video in videos:
                 if not video.get("url") or not video.get("timestamp"):
-                    continue  # Skip broken/incomplete videos
+                    continue  
 
                 self.videos.append(Video(
                     channel = self,
@@ -53,20 +68,4 @@ class Channel:
                     timestamp = video["timestamp"],
                     title=video.get("title", None),
                     description=video.get("description", None)
-                )) 
-
-    def __repr__(self):
-        return (
-            f"<Channel(username='{self.username}', "
-            f"name='{self.name}', "
-            f"channel_id='{self.channel_id}', "
-            f"videos={len(self.videos)})>"
-        )
-
-    def __str__(self):
-        return (
-            f"Channel: {self.name or self.username}\n"
-            f"Username: @{self.username}\n"
-            f"Channel ID: {self.channel_id}\n"
-            f"Videos: {len(self.videos)}"
-        )
+                ))
