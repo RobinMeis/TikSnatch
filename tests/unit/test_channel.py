@@ -42,6 +42,28 @@ test_videos = {
     }
 }
 
+new_videos = [
+    {
+        "url": "https://www.tiktok.com/@muhmemtb/video/7672724842365340960",
+        "timestamp": 1786445467.0,
+        "title": "",
+        "description": ""
+    },
+    {
+        "url": "https://www.tiktok.com/@muhmemtb/video/7672716315664076065",
+        "timestamp": 1786443482.0,
+        "title": "",
+        "description": ""
+    },
+    {
+        "url": "https://www.tiktok.com/@muhmemtb/video/7669023074129317152",
+        "timestamp": 1785583582.0,
+        "title": "",
+        "description": ""
+    }
+]
+online_videos = new_videos + list(test_videos.values())
+
 def test_channel_parsing():
     channel = Channel("muhmemtb")
     channel._parse_info(mock_info)
@@ -66,10 +88,9 @@ def test_online_channel():
     assert channel.username == "muhmemtb"
     assert channel.name == "MuhmeMTB"
     assert channel.channel_id == "7343331254596650017"
-    assert len(channel.videos) == 5
+    assert len(channel.videos) == len(online_videos)
 
-    for index, test_video in test_videos.items():
-        video = channel.videos[index]
+    for video, test_video in zip(channel.videos, online_videos):
         assert isinstance(video, Video)
         assert video.url == test_video["url"]
         assert video.timestamp.timestamp() == test_video["timestamp"]
