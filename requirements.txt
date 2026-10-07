@@ -1,2 +1,2 @@
-yt_dlp==2026.7.4
+yt_dlp==2026.8.19
 configargparse==1.8.0
